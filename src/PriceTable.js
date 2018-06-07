@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import { Button, Row } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 
 import 'react-table/react-table.css';
 
@@ -78,26 +78,38 @@ class PriceTable extends Component {
                     }}>Add new row</Button>
                 </Row>
                 <Row>
-                    <Button bsStyle="primary" onClick={() => {
-                        if (this.state.past_data.length > 0) {
-                            const { past_data, present_data, future_data } = JSON.parse(JSON.stringify(this.state));
+                    <Col md={6}>
+                        <Button
+                            bsStyle="primary"
+                            disabled={this.state.past_data.length < 1}
+                            block
+                            onClick={() => {
+                                if (this.state.past_data.length > 0) {
+                                    const { past_data, present_data, future_data } = JSON.parse(JSON.stringify(this.state));
 
-                            const previous = past_data[past_data.length - 1];
-                            const new_past = past_data.splice(past_data.length - 1, 1);
-                            future_data.unshift(present_data);
-                            this.setState({ past_data: new_past, present_data: previous, future_data: future_data });
-                        }
-                    }}>Undo</Button>
-                    <Button bsStyle="primary" onClick={() => {
-                        if (this.state.future_data.length > 0) {
-                            const { past_data, present_data, future_data } = JSON.parse(JSON.stringify(this.state));
+                                    const previous = past_data[past_data.length - 1];
+                                    const new_past = past_data.splice(past_data.length - 1, 1);
+                                    future_data.unshift(present_data);
+                                    this.setState({ past_data: new_past, present_data: previous, future_data: future_data });
+                                }
+                            }}>Undo</Button>
+                    </Col>
+                    <Col md={6}>
+                        <Button
+                            bsStyle="primary"
+                            disabled={this.state.future_data.length < 1}
+                            block
+                            onClick={() => {
+                                if (this.state.future_data.length > 0) {
+                                    const { past_data, present_data, future_data } = JSON.parse(JSON.stringify(this.state));
 
-                            const next = future_data[0];
-                            const new_future = future_data.splice(0, 1);
-                            past_data.push(present_data);
-                            this.setState({ past_data: past_data, present_data: next, future_data: new_future });
-                        }
-                    }}>Redo</Button>
+                                    const next = future_data[0];
+                                    const new_future = future_data.splice(0, 1);
+                                    past_data.push(present_data);
+                                    this.setState({ past_data: past_data, present_data: next, future_data: new_future });
+                                }
+                            }}>Redo</Button>
+                    </Col>
                 </Row>
             </div>
         );

@@ -5,6 +5,9 @@ import PriceTable from './PriceTable.js';
 class App extends Component {
   render() {
     const columns = [{
+      Header: 'Choice',
+      accessor: 'choice',
+    }, {
       Header: 'Item',
       accessor: 'item',
     }, {

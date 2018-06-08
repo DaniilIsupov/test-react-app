@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import PriceTable from './PriceTable.js';
 
 class App extends Component {

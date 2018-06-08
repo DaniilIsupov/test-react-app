@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import { Button, Row, Col, Checkbox } from 'react-bootstrap';
 
-import 'react-table/react-table.css';
-
 class PriceTable extends Component {
     constructor(props) {
         super(props);
@@ -16,6 +14,7 @@ class PriceTable extends Component {
             saved_columns: JSON.parse(JSON.stringify(props.columns)),
             checked: []
         };
+        window.localStorage.setItem('data_columns', JSON.stringify(props.columns));
         this.editRow = this.editRow.bind(this);
         this.actionsRow = this.actionsRow.bind(this);
         this.choiceRow = this.choiceRow.bind(this);
@@ -35,8 +34,8 @@ class PriceTable extends Component {
                     break;
             }
         });
-        this.state.saved_columns.splice(this.state.saved_columns.length - 1, 1);
-        this.state.saved_columns.splice(0, 1);
+        this.state.saved_columns = this.state.saved_columns.slice(1, this.state.saved_columns.length - 1);
+        // this.state.saved_columns.splice(0, 1);
     }
     // allows you to edit an important cell
     editRow(cellInfo) {
@@ -99,7 +98,7 @@ class PriceTable extends Component {
                             showPageJump={false}
                             showPagination={false}
                             defaultPageSize={10}
-                            minRows={this.props.rows.length}
+                            minRows={1}
                         />
                         <Row>
                             <Button bsStyle="link" onClick={() => {
@@ -151,12 +150,14 @@ class PriceTable extends Component {
                                 showPageJump={false}
                                 showPagination={false}
                                 defaultPageSize={10}
-                                minRows={this.state.saved_rows.length}
+                                minRows={1}
                             />
                         </Row>
                         <Row>
                             <Button bsStyle="link" onClick={() => {
                                 const saved_rows = JSON.parse(JSON.stringify(this.state.saved_rows));
+                                // rows are transferred to another page via local storage when the table is rebuilt
+                                window.localStorage.setItem('data_rows', JSON.stringify(saved_rows));
                                 this.setState({ saved_rows });
                             }}>Rebuild Table</Button>
                             <Button bsStyle="link" onClick={() => {
